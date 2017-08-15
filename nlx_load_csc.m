@@ -1,7 +1,7 @@
-function [x, t] = load_epoch(filename, start, finish)
+function [x, t] = nlx_load_csc(filename, start, finish)
 %LOAD_EPOCH   Load data for a specified time window.
 %
-%  [x, t] = load_epoch(filename, start, finish)
+%  [x, t] = nlx_load_csc(filename, start, finish)
 %
 %  INPUTS:
 %  filename:  path to .csc file with Neuralynx data. May also specify
@@ -13,7 +13,7 @@ function [x, t] = load_epoch(filename, start, finish)
 %    finish:  finish time in microseconds.
 %
 %  OUTPUTS:
-%        x:  vector of raw voltage data.
+%        x:  vector of raw voltage data in uV.
 %
 %        t:  vector of corresponding times.
 
@@ -22,8 +22,9 @@ if ischar(filename)
 end
 
 start_time = [];
-x_all = {};
-t_all = {};
+x_all = cell(1, length(filename));
+t_all = cell(1, length(filename));
+gain_all = NaN(1, length(filename));
 for i = 1:length(filename)
     % get data segment size
     [fs, segsize, hdr] = Nlx2MatCSC_v3(filename{i}, [0 0 1 1 0], 1, 2, [0 0]);
@@ -67,7 +68,15 @@ for i = 1:length(filename)
     % extract requested samples
     x_all{i} = ds(tmin_ind:tmax_ind);
     t_all{i} = times(tmin_ind:tmax_ind)';
+    gain_all(i) = nlx_gain(filename{i});
 end
 
-x = cat(1, x_all{:});
+% determine gain
+if length(unique(gain_all)) > 1
+    error('Input files have different gains.')
+end
+gain = unique(gain_all);
+
+x = cat(1, x_all{:}) * gain * 10^6;
 t = cat(1, t_all{:});
+
