@@ -1,5 +1,5 @@
 function [x, t] = nlx_load_csc(filename, start, finish)
-%LOAD_EPOCH   Load data for a specified time window.
+%NLX_LOAD_CSC   Load csc data for a specified time window.
 %
 %  [x, t] = nlx_load_csc(filename, start, finish)
 %
