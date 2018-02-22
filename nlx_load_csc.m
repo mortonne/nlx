@@ -15,7 +15,7 @@ function [x, t] = nlx_load_csc(filename, start, finish)
 %  OUTPUTS:
 %        x:  vector of raw voltage data in uV.
 %
-%        t:  vector of corresponding times.
+%        t:  vector of corresponding times in s.
 
 if ischar(filename)
     filename = {filename};
@@ -26,6 +26,10 @@ x_all = cell(1, length(filename));
 t_all = cell(1, length(filename));
 gain_all = NaN(1, length(filename));
 for i = 1:length(filename)
+    if ~exist(filename{i}, 'file')
+        error('File does not exist: %s', filename{i});
+    end
+    
     % get data segment size
     [fs, segsize, hdr] = Nlx2MatCSC_v3(filename{i}, [0 0 1 1 0], 1, 2, [0 0]);
     segdur = (segsize / fs) * 10^6;
@@ -78,5 +82,5 @@ end
 gain = unique(gain_all);
 
 x = cat(1, x_all{:}) * gain * 10^6;
-t = cat(1, t_all{:});
+t = cat(1, t_all{:}) / 10^6;
 
