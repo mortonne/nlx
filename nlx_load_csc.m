@@ -31,17 +31,19 @@ for i = 1:length(filename)
     end
     
     % get data segment size
-    [fs, segsize, hdr] = Nlx2MatCSC_v3(filename{i}, [0 0 1 1 0], 1, 2, [0 0]);
+    [fs, segsize, hdr] = Nlx2MatCSC(filename{i}, [0 0 1 1 0], 1, 2, [1 2]);
+    fs = fs(1);
+    segsize = segsize(1);
     segdur = (segsize / fs) * 10^6;
 
     % load all records that include the start and finish times (must add
     % an additional segment on each side to ensure all samples are
     % included)
     if isempty(start_time)
-        [ts, ds] = Nlx2MatCSC_v3(filename{i}, [1 0 0 0 1], 0, 4, ...
+        [ts, ds] = Nlx2MatCSC(filename{i}, [1 0 0 0 1], 0, 4, ...
                                  [start-segdur finish+segdur]);
     else
-        [ts, ds] = Nlx2MatCSC_v3(filename{i}, [1 0 0 0 1], 0, 4, ...
+        [ts, ds] = Nlx2MatCSC(filename{i}, [1 0 0 0 1], 0, 4, ...
                                  [start_time-segdur finish+segdur]);
     end
     ds = ds(:);

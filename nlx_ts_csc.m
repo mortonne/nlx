@@ -15,4 +15,4 @@ if ~exist(filename, 'file')
     error('File does not exist: %s', filename);
 end
 
-t = Nlx2MatCSC_v3(filename, [1 0 0 0 0], 0, 1);
+t = Nlx2MatCSC(filename, [1 0 0 0 0], 0, 1, 1);

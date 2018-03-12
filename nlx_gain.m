@@ -3,7 +3,7 @@ function gain = nlx_gain(eeg_file)
 %
 %  gain = nlx_gain(eeg_file)
 
-hdr = Nlx2MatCSC_v3(eeg_file, [0 0 0 0 0], 1, 2, [0 0]);
+hdr = Nlx2MatCSC(eeg_file, [0 0 0 0 0], 1, 2, [0 0]);
 
 for i = 1:length(hdr)
     if ~isempty(strfind(hdr{i}, '-ADBitVolts'))
