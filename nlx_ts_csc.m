@@ -1,5 +1,5 @@
 function t = nlx_ts_csc(filename)
-%NLX_TS_CSC   Load time stamps for a CSC data.
+%NLX_TS_CSC   Load time stamps for a CSC file.
 %
 %  t = nlx_ts_csc(filename)
 %
@@ -11,8 +11,4 @@ function t = nlx_ts_csc(filename)
 %  t - [1 x times] vector
 %      vector of time stamps in microseconds.
 
-if ~exist(filename, 'file')
-    error('File does not exist: %s', filename);
-end
-
-t = Nlx2MatCSC(filename, [1 0 0 0 0], 0, 1, 1);
+t = Nlx2MatCSCX(filename, [1 0 0 0 0], 0, 1, 1);

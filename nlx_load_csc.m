@@ -31,7 +31,7 @@ for i = 1:length(filename)
     end
     
     % get data segment size
-    [fs, segsize, hdr] = Nlx2MatCSC(filename{i}, [0 0 1 1 0], 1, 2, [1 2]);
+    [fs, segsize, hdr] = Nlx2MatCSCX(filename{i}, [0 0 1 1 0], 1, 2, [1 2]);
     fs = fs(1);
     segsize = segsize(1);
     segdur = (segsize / fs) * 10^6;
@@ -40,11 +40,11 @@ for i = 1:length(filename)
     % an additional segment on each side to ensure all samples are
     % included)
     if isempty(start_time)
-        [ts, ds] = Nlx2MatCSC(filename{i}, [1 0 0 0 1], 0, 4, ...
-                                 [start-segdur finish+segdur]);
+        [ts, ds] = Nlx2MatCSCX(filename{i}, [1 0 0 0 1], 0, 4, ...
+                              [start-segdur finish+segdur]);
     else
-        [ts, ds] = Nlx2MatCSC(filename{i}, [1 0 0 0 1], 0, 4, ...
-                                 [start_time-segdur finish+segdur]);
+        [ts, ds] = Nlx2MatCSCX(filename{i}, [1 0 0 0 1], 0, 4, ...
+                              [start_time-segdur finish+segdur]);
     end
     ds = ds(:);
 
